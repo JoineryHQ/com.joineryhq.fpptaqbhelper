@@ -1,44 +1,15 @@
-# com.joineryhq.fpptaqbhelper
+# CiviCRM: FPPTA QuickBooks Sync Helper
+## com.joineryhq.fpptaqbhelper
 
-![Screenshot](/images/screenshot.png)
+CiviCRM extension providing mportant features to support FPPTA QuickBooks integration:
 
-(*FIXME: In one or two paragraphs, describe what the extension does and why one would download it. *)
+* Allow admin to specify a custom field for identifying organizations on contributions and events.
+* Alter that custom field:
+   * Match on organization name only.
+   * Avoid duplicates: for multiple orgs with identical name, use only the one with the lowest contact ID.
 
 The extension is licensed under [GPL-3.0](LICENSE.txt).
 
-## Requirements
+## Configuration
 
-* PHP v7.2+
-* CiviCRM (*FIXME: Version number*)
-
-## Installation (Web UI)
-
-Learn more about installing CiviCRM extensions in the [CiviCRM Sysadmin Guide](https://docs.civicrm.org/sysadmin/en/latest/customize/extensions/).
-
-## Installation (CLI, Zip)
-
-Sysadmins and developers may download the `.zip` file for this extension and
-install it with the command-line tool [cv](https://github.com/civicrm/cv).
-
-```bash
-cd <extension-dir>
-cv dl com.joineryhq.fpptaqbhelper@https://github.com/FIXME/com.joineryhq.fpptaqbhelper/archive/master.zip
-```
-
-## Installation (CLI, Git)
-
-Sysadmins and developers may clone the [Git](https://en.wikipedia.org/wiki/Git) repo for this extension and
-install it with the command-line tool [cv](https://github.com/civicrm/cv).
-
-```bash
-git clone https://github.com/FIXME/com.joineryhq.fpptaqbhelper.git
-cv en fpptaqbhelper
-```
-
-## Getting Started
-
-(* FIXME: Where would a new user navigate to get started? What changes would they see? *)
-
-## Known Issues
-
-(* FIXME *)
+Configuration settings are accessible via Administer > CiviContribute > FPPTA QuickBooks Settings
