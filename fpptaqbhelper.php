@@ -95,17 +95,41 @@ function fpptaqbhelper_civicrm_entityTypes(&$entityTypes) {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_navigationMenu
  */
-//function fpptaqbhelper_civicrm_navigationMenu(&$menu) {
-//  _fpptaqbhelper_civix_insert_navigation_menu($menu, 'Mailings', [
-//    'label' => E::ts('New subliminal message'),
-//    'name' => 'mailing_subliminal_message',
-//    'url' => 'civicrm/mailing/subliminal',
-//    'permission' => 'access CiviMail',
-//    'operator' => 'OR',
-//    'separator' => 0,
-//  ]);
-//  _fpptaqbhelper_civix_navigationMenu($menu);
-//}
+/**
+ * Implements hook_civicrm_navigationMenu().
+ *
+ * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_navigationMenu
+ */
+function fpptaqbhelper_civicrm_navigationMenu(&$menu) {
+  _fpptaqbhelper_get_max_navID($menu, $max_navID);
+  _fpptaqbhelper_civix_insert_navigation_menu($menu, 'Administer/CiviContribute', array(
+    'label' => E::ts('FPPTA QuickBooks Settings'),
+    'name' => 'FPPTA QuickBooks Settings',
+    'url' => 'civicrm/admin/fpptaqbhelper/settings?reset=1',
+    'permission' => 'administer CiviCRM',
+    'operator' => 'AND',
+    'separator' => NULL,
+    'navID' => ++$max_navID,
+  ));
+  _fpptaqbhelper_civix_navigationMenu($menu);
+}
+
+/**
+ * For an array of menu items, recursively get the value of the greatest navID
+ * attribute.
+ * @param <type> $menu
+ * @param <type> $max_navID
+ */
+function _fpptaqbhelper_get_max_navID(&$menu, &$max_navID = NULL) {
+  foreach ($menu as $id => $item) {
+    if (!empty($item['attributes']['navID'])) {
+      $max_navID = max($max_navID, $item['attributes']['navID']);
+    }
+    if (!empty($item['child'])) {
+      _fpptaqbhelper_get_max_navID($item['child'], $max_navID);
+    }
+  }
+}
 
 /**
  * Log CiviCRM API errors to CiviCRM log.

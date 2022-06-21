@@ -26,7 +26,7 @@ class CRM_Fpptaqbhelper_Form_Settings extends CRM_Core_Form {
   ) {
 
     $this->setSettings();
-
+  
     parent::__construct(
       $state = NULL,
       $action = CRM_Core_Action::NONE,
@@ -36,6 +36,7 @@ class CRM_Fpptaqbhelper_Form_Settings extends CRM_Core_Form {
   }
 
   public function buildQuickForm() {
+    $this->controller->_destination = $this->controller->_entryURL; // Ensure redirection to self after submit.
     $settings = $this->_settings;
     foreach ($settings as $name => $setting) {
       if (isset($setting['quick_form_type'])) {
@@ -119,7 +120,7 @@ class CRM_Fpptaqbhelper_Form_Settings extends CRM_Core_Form {
     $this->assign('elementNames', $this->getRenderableElementNames());
 
     $session = CRM_Core_Session::singleton();
-    $session->pushUserContext(CRM_Utils_System::url('civicrm/admin/fpptaqbhelper/settings', 'reset=1', TRUE));
+//    $session->pushUserContext(CRM_Utils_System::url('civicrm/admin/fpptaqbhelper/settings', 'reset=1', TRUE));
     parent::buildQuickForm();
   }
 
