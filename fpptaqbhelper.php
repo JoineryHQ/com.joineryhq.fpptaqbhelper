@@ -106,3 +106,33 @@ function fpptaqbhelper_civicrm_entityTypes(&$entityTypes) {
 //  ]);
 //  _fpptaqbhelper_civix_navigationMenu($menu);
 //}
+
+/**
+ * Log CiviCRM API errors to CiviCRM log.
+ */
+function _fpptaqbhelper_log_api_error(API_Exception $e, string $entity, string $action, array $params) {
+  $message = "CiviCRM API Error '{$entity}.{$action}': " . $e->getMessage() . '; ';
+  $message .= "API parameters when this error happened: " . json_encode($params) . '; ';
+  $bt = debug_backtrace();
+  $error_location = "{$bt[1]['file']}::{$bt[1]['line']}";
+  $message .= "Error API called from: $error_location";
+  CRM_Core_Error::debug_log_message($message);
+}
+
+/**
+ * CiviCRM API wrapper. Wraps with try/catch, redirects errors to log, saves
+ * typing.
+ */
+function _fpptaqbhelper_civicrmapi(string $entity, string $action, array $params, bool $silence_errors = TRUE) {
+  try {
+    $result = civicrm_api3($entity, $action, $params);
+  }
+  catch (API_Exception $e) {
+    _fpptaqbhelper_log_api_error($e, $entity, $action, $params);
+    if (!$silence_errors) {
+      throw $e;
+    }
+  }
+
+  return $result;
+}
