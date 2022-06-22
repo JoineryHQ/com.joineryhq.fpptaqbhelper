@@ -30,6 +30,9 @@ function fpptaqbhelper_civicrm_buildForm($formName, &$form) {
   if ($formName == 'CRM_Contribute_Form_Contribution_Main') {
     $customFieldId = Civi::settings()->get('fpptaqbhelper_cf_id_contribution');
   }
+  if ($formName == 'CRM_Event_Form_Registration_Register') {
+    $customFieldId = Civi::settings()->get('fpptaqbhelper_cf_id_participant');
+  }
   if (!empty($customFieldId)) {
     if (array_key_exists("custom_{$customFieldId}", $form->_elementIndex)) {
       $jsVars = [
