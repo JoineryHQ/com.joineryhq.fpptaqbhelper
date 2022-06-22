@@ -5,6 +5,42 @@ require_once 'fpptaqbhelper.civix.php';
 use CRM_Fpptaqbhelper_ExtensionUtil as E;
 // phpcs:enable
 
+
+/**
+ * Implements hook_civicrm_apiWrappers().
+ *
+ * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_apiWrappers/
+ */
+function fpptaqbhelper_civicrm_apiWrappers(&$wrappers, $apiRequest) {
+  if (
+    strtolower($apiRequest['entity']) == 'contact'
+    && strtolower($apiRequest['action']) == 'get'
+    && (($apiRequest['params']['isFpptaqbhelperContactRef'] ?? 0) == 1)
+  ) {
+    $wrappers[] = new CRM_Fpptaqbhelper_APIWrappers_Contact_IsFpptaqbhelperContactRef();
+  }
+}
+
+/**
+ * Implements hook_civicrm_buildForm().
+ *
+ * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_buildForm/
+ */
+function fpptaqbhelper_civicrm_buildForm($formName, &$form) {
+  if ($formName == 'CRM_Contribute_Form_Contribution_Main') {
+    $customFieldId = Civi::settings()->get('fpptaqbhelper_cf_id_contribution');
+  }
+  if (!empty($customFieldId)) {
+    if (array_key_exists("custom_{$customFieldId}", $form->_elementIndex)) {
+      $jsVars = [
+        'contactRefCustomFieldId' => $customFieldId,
+      ];
+      CRM_Core_Resources::singleton()->addVars('fpptaqbhelper', $jsVars);
+      CRM_Core_Resources::singleton()->addScriptFile('com.joineryhq.fpptaqbhelper', 'js/alterContactRef.js');
+    }
+  }
+}
+
 /**
  * Implements hook_civicrm_config().
  *
