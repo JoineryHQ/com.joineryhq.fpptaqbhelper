@@ -12,8 +12,8 @@ use CRM_Fpptaqbhelper_ExtensionUtil as E;
  */
 class CRM_Fpptaqbhelper_Form_Settings extends CRM_Core_Form {
 
-  // Group must be the same as the group in your Extension.setting.php
-  public static $settingFilter = array('group' => 'fpptaqbhelper');
+  // Typical Joinery settings form boilerplate calls for defining $settingFilter
+  // here, but this extension uses hook_civicrm_fpptaqbhelper_settings().
   public static $extensionName = 'com.joineryhq.fpptaqbhelper';
   private $_submittedValues = array();
   private $_settings = array();
@@ -175,8 +175,14 @@ class CRM_Fpptaqbhelper_Form_Settings extends CRM_Core_Form {
   }
 
   public static function getSettings() {
-    $settings = _fpptaqbhelper_civicrmapi('setting', 'getfields', array('filters' => self::$settingFilter));
-    return $settings['values'];
+    $ret = [];
+    $settingsGroups = [];
+    CRM_Utils_Hook::singleton()->invoke(['settingsGroups'], $settingsGroups, CRM_Utils_Hook::$_nullObject, CRM_Utils_Hook::$_nullObject, CRM_Utils_Hook::$_nullObject, CRM_Utils_Hook::$_nullObject, CRM_Utils_Hook::$_nullObject, 'civicrm_fpptaqbhelper_settings');
+    foreach ($settingsGroups as $settingsGroup) {
+      $settings = _fpptaqbhelper_civicrmapi('setting', 'getfields', array('filters' => ['group' => $settingsGroup]));
+      $ret = array_merge($ret, $settings['values']);
+    }
+    return $ret;
   }
 
   /**

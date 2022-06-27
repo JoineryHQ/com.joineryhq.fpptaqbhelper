@@ -5,6 +5,12 @@ require_once 'fpptaqbhelper.civix.php';
 use CRM_Fpptaqbhelper_ExtensionUtil as E;
 // phpcs:enable
 
+/**
+ * Implements hook_civicrm_fpptaqbhelper_settings().
+ */
+function fpptaqbhelper_civicrm_fpptaqbhelper_settings(&$settingsGroups) {
+  $settingsGroups[] = 'fpptaqbhelper';
+}
 
 /**
  * Implements hook_civicrm_apiWrappers().
