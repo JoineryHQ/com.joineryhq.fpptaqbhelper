@@ -3,7 +3,6 @@
     if (CRM.vars.fpptaqbhelper.contactRefCustomFieldId != undefined) {
       var selector = '#custom_' + CRM.vars.fpptaqbhelper.contactRefCustomFieldId;
       var opts = $(selector).data('select2').opts;
-      console.log('window load opts', opts);
       opts.ajax.data=function(term){return {isFpptaqbhelperContactRef: '1', term: term}};
       $(selector).crmSelect2(opts);
     };
