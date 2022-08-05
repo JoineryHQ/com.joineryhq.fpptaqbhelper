@@ -87,7 +87,7 @@ class CRM_Fpptaqbhelper_Form_Settings extends CRM_Core_Form {
             }
             break;
         }
-        if ($element && $setting['html_attributes']['readonly']) {
+        if ($element && ($setting['html_attributes']['readonly'] ?? FALSE)) {
           $element->freeze();
         }
       }
