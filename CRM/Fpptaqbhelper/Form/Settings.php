@@ -38,11 +38,13 @@ class CRM_Fpptaqbhelper_Form_Settings extends CRM_Core_Form {
   public function buildQuickForm() {
     $this->controller->_destination = $this->controller->_entryURL; // Ensure redirection to self after submit.
     $settings = $this->_settings;
+
     foreach ($settings as $name => $setting) {
+      $element = NULL;
       if (isset($setting['quick_form_type'])) {
         switch ($setting['html_type']) {
           case 'Select':
-            $this->add(
+            $element = $this->add(
               // field type
               $setting['html_type'],
               // field name
@@ -56,7 +58,7 @@ class CRM_Fpptaqbhelper_Form_Settings extends CRM_Core_Form {
             break;
 
           case 'CheckBox':
-            $this->addCheckBox(
+            $element = $this->addCheckBox(
               // field name
               $setting['name'],
               // field label
@@ -66,7 +68,7 @@ class CRM_Fpptaqbhelper_Form_Settings extends CRM_Core_Form {
             break;
 
           case 'Radio':
-            $this->addRadio(
+            $element = $this->addRadio(
               // field name
               $setting['name'],
               // field label
@@ -78,12 +80,15 @@ class CRM_Fpptaqbhelper_Form_Settings extends CRM_Core_Form {
           default:
             $add = 'add' . $setting['quick_form_type'];
             if ($add == 'addElement') {
-              $this->$add($setting['html_type'], $name, E::ts($setting['title']), CRM_Utils_Array::value('html_attributes', $setting, array()));
+              $element = $this->$add($setting['html_type'], $name, E::ts($setting['title']), CRM_Utils_Array::value('html_attributes', $setting, array()));
             }
             else {
-              $this->$add($name, E::ts($setting['title']));
+              $element = $this->$add($name, E::ts($setting['title']));
             }
             break;
+        }
+        if ($element && $setting['html_attributes']['readonly']) {
+          $element->freeze();
         }
       }
       $descriptions[$setting['name']] = E::ts($setting['description']);
