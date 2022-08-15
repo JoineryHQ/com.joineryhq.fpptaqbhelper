@@ -87,7 +87,7 @@ class CRM_Fpptaqbhelper_Form_Settings extends CRM_Core_Form {
             }
             break;
         }
-        if ($element && ($setting['html_attributes']['readonly'] ?? FALSE)) {
+        if ($element && ($setting['html_attributes']['readonly'] ?? NULL)) {
           $element->freeze();
         }
       }
@@ -200,10 +200,30 @@ class CRM_Fpptaqbhelper_Form_Settings extends CRM_Core_Form {
     _fpptaqbhelper_civicrmapi('setting', 'create', $values);
 
     // Save any that are not submitted, as well (e.g., checkboxes that aren't checked).
-    $unsettings = array_fill_keys(array_keys(array_diff_key($settings, $this->_submittedValues)), NULL);
+    $settingsEditable = $this->filterEditableSettings();
+    $unsettings = array_fill_keys(array_keys(array_diff_key($settingsEditable, $this->_submittedValues)), NULL);
     _fpptaqbhelper_civicrmapi('setting', 'create', $unsettings);
 
     CRM_Core_Session::setStatus(" ", E::ts('Settings saved.'), "success");
+  }
+
+  /**
+   * From all settings, get only the ones that are editable in the form.
+   * (E.g. settings are not shown in the form if 'quick_form_type' is NULL;
+   * settings are not editable in the form if ['html_attributes']['readonly'] is set.)
+   */
+  private function filterEditableSettings() {
+    $ret = [];
+    foreach ($this->_settings as $name => $setting) {
+      if (
+        !isset($setting['quick_form_type'])
+        || ($setting['html_attributes']['readonly'] ?? NULL)
+      ) {
+        continue;
+      }
+      $ret[$name] = $setting;
+    }
+    return $ret;
   }
 
   /**
