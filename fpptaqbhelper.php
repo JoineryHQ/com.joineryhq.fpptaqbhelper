@@ -6,51 +6,6 @@ use CRM_Fpptaqbhelper_ExtensionUtil as E;
 // phpcs:enable
 
 /**
- * Implements hook_civicrm_fpptaqbhelper_settings().
- */
-function fpptaqbhelper_civicrm_fpptaqbhelper_settings(&$settingsGroups) {
-  $settingsGroups[] = 'fpptaqbhelper';
-}
-
-/**
- * Implements hook_civicrm_apiWrappers().
- *
- * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_apiWrappers/
- */
-function fpptaqbhelper_civicrm_apiWrappers(&$wrappers, $apiRequest) {
-  if (
-    strtolower($apiRequest['entity']) == 'contact'
-    && strtolower($apiRequest['action']) == 'get'
-    && (($apiRequest['params']['isFpptaqbhelperContactRef'] ?? 0) == 1)
-  ) {
-    $wrappers[] = new CRM_Fpptaqbhelper_APIWrappers_Contact_IsFpptaqbhelperContactRef();
-  }
-}
-
-/**
- * Implements hook_civicrm_buildForm().
- *
- * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_buildForm/
- */
-function fpptaqbhelper_civicrm_buildForm($formName, &$form) {
-  if ($formName == 'CRM_Contribute_Form_Contribution_Main') {
-    $customFieldId = Civi::settings()->get('fpptaqbhelper_cf_id_contribution');
-  }
-  if ($formName == 'CRM_Event_Form_Registration_Register') {
-    $customFieldId = Civi::settings()->get('fpptaqbhelper_cf_id_participant');
-  }
-  if (!empty($customFieldId)) {
-    if (array_key_exists("custom_{$customFieldId}", $form->_elementIndex)) {
-      $jsVars = [
-        'contactRefCustomFieldId' => $customFieldId,
-      ];
-      CRM_Core_Resources::singleton()->addVars('fpptaqbhelper', $jsVars);
-      CRM_Core_Resources::singleton()->addScriptFile('com.joineryhq.fpptaqbhelper', 'js/alterContactRef.js');
-    }
-  }
-}
-
-/**
  * Implements hook_civicrm_config().
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_config/
@@ -134,30 +89,6 @@ function fpptaqbhelper_civicrm_entityTypes(&$entityTypes) {
 //function fpptaqbhelper_civicrm_preProcess($formName, &$form) {
 //
 //}
-
-/**
- * Implements hook_civicrm_navigationMenu().
- *
- * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_navigationMenu
- */
-/**
- * Implements hook_civicrm_navigationMenu().
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_navigationMenu
- */
-function fpptaqbhelper_civicrm_navigationMenu(&$menu) {
-  _fpptaqbhelper_get_max_navID($menu, $max_navID);
-  _fpptaqbhelper_civix_insert_navigation_menu($menu, 'Administer/CiviContribute', array(
-    'label' => E::ts('FPPTA QuickBooks Settings'),
-    'name' => 'FPPTA QuickBooks Settings',
-    'url' => 'civicrm/admin/fpptaqbhelper/settings?reset=1',
-    'permission' => 'administer CiviCRM',
-    'operator' => 'AND',
-    'separator' => NULL,
-    'navID' => ++$max_navID,
-  ));
-  _fpptaqbhelper_civix_navigationMenu($menu);
-}
 
 /**
  * For an array of menu items, recursively get the value of the greatest navID

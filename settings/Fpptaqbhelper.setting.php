@@ -10,7 +10,6 @@ return array(
     'add' => '5.0',
     'is_domain' => 1,
     'is_contact' => 0,
-    'description' => 'Every contribution page will need this field to allow the user to indicate the donating organization',
     'description' => 'Every contribution page will need this field to allow the user to indicate the donating organization. (This setting only offers Contact Reference custom fields, on custom groups extending contributions, which are filtered for contact_type=organization.)',
     'title' => E::ts('Custom "Donating Organization" field for contributions'),
     'type' => 'Int',

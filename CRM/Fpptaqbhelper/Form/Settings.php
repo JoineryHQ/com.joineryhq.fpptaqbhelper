@@ -25,6 +25,8 @@ class CRM_Fpptaqbhelper_Form_Settings extends CRM_Core_Form {
     $name = NULL
   ) {
 
+    CRM_Core_Error::statusBounce('The URL "civicrm/admin/fpptaqbhelper/settings" is replaced with "civicrm/admin/fpptaqb/settings". Please update your bookmarks.', CRM_Utils_System::url('civicrm/admin/fpptaqb/settings', 'reset=1', NULL, NULL, NULL, NULL, TRUE));
+    
     $this->setSettings();
   
     parent::__construct(
