@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <extension key="com.joineryhq.fpptaqbhelper" type="module">
   <file>fpptaqbhelper</file>
-  <name>FPPTA QuickBooks Sync Helper</name>
-  <description>Important features to support FPPTA QuickBooks integration</description>
+  <name>FPPTA QuickBooks Sync Helper (DEPRECATED)</name>
+  <description>DEPRECATED: All functionality formerly provided by this extension is now provided by the main "FPPTA QuickBooks Sync" extension.</description>
   <license>GPL-3.0</license>
   <maintainer>
     <author>Allen Shaw</author>
@@ -14,8 +14,8 @@
     <url desc="Support">https://github.com/JoineryHQ/com.joineryhq.fpptaqbhelper/issues</url>
     <url desc="Licensing">http://www.gnu.org/licenses/gpl-3.0.html</url>
   </urls>
-  <releaseDate>2022-06-29</releaseDate>
-  <version>0.1.1</version>
+  <releaseDate>2022-08-19</releaseDate>
+  <version>0.1.2</version>
   <develStage>beta</develStage>
   <compatibility>
     <ver>5.0</ver>
